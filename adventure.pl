@@ -256,11 +256,35 @@ respond([H|T]):-
     write(" "),
     respond(T).
 
-/* Remove element from a list */
- %remove_element(H, [H|T], [T]).
- %remove_element(Element, [H|T], )
- %     remove_element(Element, [T], )
+/* LIST PREDICATES - move to new consult file */
 
-     
+/* Remove one instance of  element from a list - returns FALSE if not present */
+remove_element(H, [H|T], T). % if element is head of list, return tail.
+remove_element(Element, [H|T], [H|NewList]):- % if not head, add heat to processed tail
+     remove_element(Element, T, NewList). % search tail for element and return new list with tail removed.
+
+/*  list_length(List, Length) */
+list_length([], 0).
+list_length([_|T], NewLength):-
+    list_length(T, L),
+    NewLength is L + 1.
+
+/* Next element in a list */
+ first_element([H|_], H).
+ next_element(H, [H|T], Next):-
+     first_element(T, Next).
+ next_element(A, [_|T], Next):-
+     next_element(A, T, Next).
+
+/* Reverse List */
+reverse_list([], List1, List1).
+reverse_list([H|T], List1, List2):-
+    reverse_list(T, List1, [H|List2]).
+
+/* Last element in a list */
+ last_element(List, Element):-
+     reverse_list(List, [H|T], []),
+     Element = H.
+
 
 
