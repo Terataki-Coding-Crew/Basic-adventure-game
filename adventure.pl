@@ -15,14 +15,14 @@ door(kitchen, cellar, closed).
 door('dining room',kitchen, closed).
 
 :- dynamic location/2.
-location_list(object(desk, colour(brown), size(large), weight(90)),office).
-location_list(object(apple, colour(red), size(small), weight(1)),kitchen).
-location_list(object(flashlight, colour(silver), size(small), weight(2)),desk).
-location_list(object('washing machine', colour(white), size(large), weight(200)), cellar).
-location_list(object(nani, colour(brown), size(small), weight(3)),'washing machine').
-location_list(object(broccoli, colour(green), size(small), weight(1)),kitchen).
-location_list(object(crackers, colour(biscuit-coloured), size(small), weight(1)),kitchen).
-location_list(object(computer, colour(cream), size(medium), weight(10)), desk).
+location_list(object(desk, article(a), colour(brown), size(large), weight(90)),office).
+location_list(object(apple, article(a), colour(red), size(small), weight(1)),kitchen).
+location_list(object(flashlight, article(a), colour(silver), size(small), weight(2)),desk).
+location_list(object('washing machine', article(a), colour(white), size(large), weight(200)), cellar).
+location_list(object(nani, article(), colour(brown), size(small), weight(3)),'washing machine').
+location_list(object(broccoli, article(some), colour(green), size(small), weight(1)),kitchen).
+location_list(object(crackers, article(some), colour(biscuit-coloured), size(small), weight(1)),kitchen).
+location_list(object(computer, article(a), colour(cream), size(medium), weight(10)), desk).
 
 :- dynamic flashlight/1.
 flashlight(off).
@@ -48,10 +48,9 @@ connected(X,Y):-
     door(Y,X,_).
 
 list_things(Place):-
-    location(object(X,colour(Y),_,_), Place),
+    location_list(object(X,article(A),colour(Y),_,_), Place),
     tab(2),
-    write('A '), write(Y), write(' '), write(X),
-    nl,
+    respond(['You see ',A,Y,X]),
     fail.
 list_things(_).
 
@@ -92,7 +91,7 @@ can_go(Place):-
     here(X),
     connected(X,Place),
     door_is_open(X,Place).
-can_go(Place):-
+can_go(_):-
     write('You can''t get there from here.'),
     fail.
 
@@ -142,11 +141,10 @@ close_door(Place):-
 close_door(_):-
     write('The door is closed.'), nl.
 
-    
 
 
 move(Place):-
-    retract(here(X)),
+    retract(here(_)),
     asserta(here(Place)).
 
 
@@ -235,6 +233,7 @@ where_is(Item,Place):-
 member(H,[H|T]).
 member(X,[H|T]):-
     member(X,T).
+
 /* Append predicate */
 append([],X,X). % Appending X to an empty list id X.
 append([H|T1],X,[H|T2]):-    % Append X to tail T1 to produce T2 and add it to H.
@@ -243,4 +242,25 @@ append([H|T1],X,[H|T2]):-    % Append X to tail T1 to produce T2 and add it to H
 
 location(Item,Place):-     % Item is found in Place if it is a member of the Item-list of Place
     location_list(Item_list,Place),
-    member(Item,Item_list)
+    member(Item,Item_list).
+
+/* Place item at or in location */
+add_item(NewItem, Location, [NewItem|Item_List]):-
+    location_list(Item_List,Location).
+
+/* Write a responce */
+respond([]):-
+    write("\n").
+respond([H|T]):-
+    write(H),
+    write(" "),
+    respond(T).
+
+/* Remove element from a list */
+ %remove_element(H, [H|T], [T]).
+ %remove_element(Element, [H|T], )
+ %     remove_element(Element, [T], )
+
+     
+
+
