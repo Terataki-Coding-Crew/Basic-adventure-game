@@ -1,6 +1,11 @@
 /* Redefinitions */
 :- op(35,xfy,is_in).
 :- op(35,fx,go_to).
+:- op(37,fx,take).
+:- op(37,fx,put).
+:- op(37,fx,leave).
+:- op(37,fx,turn_on).
+:- op(37,fx,turn_off).
 
 
 
@@ -182,6 +187,9 @@ put(Item):-
     nl,
     write('You do not have the '),write(Item),nl,
     fail.
+
+leave(Item):-
+    put(Item).
 
 inventory:-
     nl,
