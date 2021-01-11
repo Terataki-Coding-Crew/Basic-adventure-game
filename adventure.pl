@@ -1,3 +1,10 @@
+/* Redefinitions */
+:- op(35,xfy,is_in).
+:- op(35,fx,go_to).
+
+
+
+
 :- dynamic have/1.
 
 
@@ -19,7 +26,7 @@ location_list(object(desk, article(a), colour(brown), size(large), weight(90)),o
 location_list(object(apple, article(a), colour(red), size(small), weight(1)),kitchen).
 location_list(object(flashlight, article(a), colour(silver), size(small), weight(2)),desk).
 location_list(object('washing machine', article(a), colour(white), size(large), weight(200)), cellar).
-location_list(object(nani, article(), colour(brown), size(small), weight(3)),'washing machine').
+location_list(object(nani, article(the), colour(brown), size(small), weight(3)),'washing machine').
 location_list(object(broccoli, article(some), colour(green), size(small), weight(1)),kitchen).
 location_list(object(crackers, article(some), colour(biscuit-coloured), size(small), weight(1)),kitchen).
 location_list(object(computer, article(a), colour(cream), size(medium), weight(10)), desk).
@@ -36,11 +43,7 @@ tastes_yucky(broccoli).
 here(kitchen).
 
 
-
 is_in(knife,desk).
-
-
-
 
 connected(X,Y):-
     door(X,Y,_).
@@ -82,7 +85,7 @@ look_in(X):-
     write('Looking in the '), write(X), write(', you can see:'), nl,
     list_contents(X).
 
-goto(Place):-
+go_to(Place):-
     can_go(Place),
     move(Place),
     look.
