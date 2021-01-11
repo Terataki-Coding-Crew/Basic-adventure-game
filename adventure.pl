@@ -283,8 +283,13 @@ reverse_list([H|T], List1, List2):-
 
 /* Last element in a list */
  last_element(List, Element):-
-     reverse_list(List, [H|T], []),
+     reverse_list(List, [H|_], []),
      Element = H.
 
+/* Split list at element */
+/*  split_at(Element, List, List1, list2). */
+ split_at(Elem,List,Left,Right) :-
+  append(Left,[Elem|Rest],List), % Magic!!! append left list to right list (broken at elem) to produce full list
+  Right = [Elem|Rest].
 
 
