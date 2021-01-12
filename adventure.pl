@@ -303,4 +303,28 @@ reverse_list([H|T], List1, List2):-
   append(Left,[Elem|Rest],List), % Magic!!! append left list to right list (broken at elem) to produce full list
   Right = [Elem|Rest].
 
+/* Game loop */
+ repeat,
+ read(Command),
+ puzzle(Command),
+ do(Command),
+ nl,
+ endCond(command).
+
+ endCond(end).
+
+/* do commands */
+ do(inventory):-
+     inventory,
+     !.
+ do(look):-
+     look,
+     !.
+
+ /* Puzzles */
+  puzzle(_).
+
+
+
+
 
