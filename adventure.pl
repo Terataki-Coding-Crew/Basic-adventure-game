@@ -199,7 +199,8 @@ inventory:-
     fail.
 inventory:-
     nl,
-    write('You don\'t have anything else.').
+    write('You don\'t have anything else.'),
+    nl.
 
 /* Lighting */
 turn_on(_):-     %%% Generalise??
@@ -241,8 +242,8 @@ where_is(Item,Place):-
 
 /* List predicates */
 /* Membership predicates */
-member(H,[H|T]).
-member(X,[H|T]):-
+member(H,[H|_]).
+member(X,[_|T]):-
     member(X,T).
 
 /* Append predicate */
@@ -293,31 +294,39 @@ reverse_list([H|T], List1, List2):-
     reverse_list(T, List1, [H|List2]).
 
 /* Last element in a list */
- last_element(List, Element):-
+last_element(List, Element):-
      reverse_list(List, [H|_], []),
      Element = H.
 
 /* Split list at element */
 /*  split_at(Element, List, List1, list2). */
- split_at(Elem,List,Left,Right) :-
+split_at(Elem,List,Left,Right) :-
   append(Left,[Elem|Rest],List), % Magic!!! append left list to right list (broken at elem) to produce full list
   Right = [Elem|Rest].
 
 /* Game loop */
- repeat,
- read(Command),
- puzzle(Command),
- do(Command),
- nl,
- endCond(command).
+adventure:-
+    write("Welcome to Adventure."),
+    nl,
+    look,
+    inventory,
+    repeat,
+    read(Command),
+    puzzle(Command),
+    do(Command),
+    nl,
+    endCond(Command).
 
- endCond(end).
+endCond(end):-
+    !.
+endCond(quit):-
+    halt.
 
 /* do commands */
- do(inventory):-
+do(inventory):-
      inventory,
      !.
- do(look):-
+do(look):-
      look,
      !.
 
