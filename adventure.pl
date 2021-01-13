@@ -308,28 +308,27 @@ split_at(Elem,List,Left,Right) :-
 adventure:-
     write("Welcome to Adventure."),
     nl,
+    look,
+    inventory,
     game_loop.
 
 game_loop:-
-    look,
-    inventory,
     %repeat,
     read(Command),
     puzzle(Command),
     do(Command),
     nl,
-    (Command = end; game_loop).
-    %endCond(Command).
+    (endCond(Command); game_loop).
+
 
 endCond(end):-
-
+    write("Game over."),
     !.
-endCond(quit):-
-    halt.
 endCond(_):-
     fail.
 
 /* do commands */
+do(end).
 do(inventory):-
      inventory,
      !.
