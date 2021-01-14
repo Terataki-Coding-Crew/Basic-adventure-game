@@ -1,4 +1,13 @@
-/* Redefinitions */
+:-[initial_state].
+%consult('./initial_state.pl').
+
+
+main:-
+    adventure.
+
+
+
+    /* Redefinitions */
 :- op(35,xfy,is_in).
 :- op(35,fx,go_to).
 :- op(37,fx,take).
@@ -8,16 +17,8 @@
 :- op(37,fx,turn_off).
 
 
-
-
 :- dynamic have/1.
 
-
-room(kitchen).
-room(office).
-room(hall).
-room('dining room').
-room(cellar).
 
 :- dynamic door/3.
 door(office,hall,closed).
@@ -26,12 +27,12 @@ door(hall, 'dining room', closed).
 door(kitchen, cellar, closed).
 door('dining room',kitchen, closed).
 
-:- dynamic location/2.
+:- dynamic location_list/2.
 location_list(object(desk, article(a), colour(brown), size(large), weight(90)),office).
 location_list(object(apple, article(a), colour(red), size(small), weight(1)),kitchen).
 location_list(object(flashlight, article(a), colour(silver), size(small), weight(2)),desk).
 location_list(object('washing machine', article(a), colour(white), size(large), weight(200)), cellar).
-location_list(object(nani, article(the), colour(brown), size(small), weight(3)),'washing machine').
+location_list(object(moosies, article(the), colour(black), size(small), weight(10)),'dog basket').
 location_list(object(broccoli, article(some), colour(green), size(small), weight(1)),kitchen).
 location_list(object(crackers, article(some), colour(biscuit-coloured), size(small), weight(1)),kitchen).
 location_list(object(computer, article(a), colour(cream), size(medium), weight(10)), desk).
@@ -262,10 +263,10 @@ add_item(NewItem, Location, [NewItem|Item_List]):-
 
 /* Write a responce */
 respond([]):-
-    write("\n").
+    write('\n').
 respond([H|T]):-
     write(H),
-    write(" "),
+    write(' '),
     respond(T).
 
 /* LIST PREDICATES - move to new consult file */
@@ -282,10 +283,11 @@ list_length([_|T], NewLength):-
     NewLength is L + 1.
 
 /* Next element in a list */
- first_element([H|_], H).
- next_element(H, [H|T], Next):-
+first_element([H|_], H).
+
+next_element(H, [H|T], Next):-
      first_element(T, Next).
- next_element(A, [_|T], Next):-
+next_element(A, [_|T], Next):-
      next_element(A, T, Next).
 
 /* Reverse List */
@@ -306,7 +308,9 @@ split_at(Elem,List,Left,Right) :-
 
 /* Game loop */
 adventure:-
-    write("Welcome to Adventure."),
+    %write('Welcome to Adventure.'),
+    introduction,
+    choose_options,
     nl,
     look,
     inventory,
@@ -320,9 +324,19 @@ game_loop:-
     nl,
     (endCond(Command); game_loop).
 
+choose_options:-
+    write('Would you like to continue your previous adventure y/n? \n'),
+    read(Input),
+    load_adventure(Input).
+choose_options.
+
+load_adventure(y):-
+    write('loading saved adventure...').
+    %restore(saved_state).
+load_adventure(_).
 
 endCond(end):-
-    write("Game over."),
+    write('Game over.'),
     !.
 endCond(_):-
     fail.
@@ -341,5 +355,5 @@ do(peep):-
 
  /* Puzzles */
 puzzle(_):-
-    write("This is a puzzle"),
+    write('This is a puzzle'),
     nl.
