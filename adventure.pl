@@ -17,44 +17,21 @@ main:-
 :- op(37,fx,turn_off).
 
 
-:- dynamic have/1.
 
 
-:- dynamic door/3.
-door(office,hall,closed).
-door(kitchen,office,closed).
-door(hall, 'dining room', closed).
-door(kitchen, cellar, closed).
-door('dining room',kitchen, closed).
 
-:- dynamic location_list/2.
-location_list(object(desk, article(a), colour(brown), size(large), weight(90)),office).
-location_list(object(apple, article(a), colour(red), size(small), weight(1)),kitchen).
-location_list(object(flashlight, article(a), colour(silver), size(small), weight(2)),desk).
-location_list(object('washing machine', article(a), colour(white), size(large), weight(200)), cellar).
-location_list(object(moosies, article(the), colour(black), size(small), weight(10)),'dog basket').
-location_list(object(broccoli, article(some), colour(green), size(small), weight(1)),kitchen).
-location_list(object(crackers, article(some), colour(biscuit-coloured), size(small), weight(1)),kitchen).
-location_list(object(computer, article(a), colour(cream), size(medium), weight(10)), desk).
-
-:- dynamic flashlight/1.
-flashlight(off).
-
-edible(apple).
-edible(crackers).
-
-tastes_yucky(broccoli).
-
-:- dynamic here/1.
-here(kitchen).
-
-
-is_in(knife,desk).
-
-connected(X,Y):-
+connected_by_door(X,Y):-
     door(X,Y,_).
-connected(X,Y):-
+connected_by_door(X,Y):-
     door(Y,X,_).
+connected_open(X,Y):-
+    location(X,_,List),
+    member(Y, List),
+    fail.
+connected_open(_,_).
+
+% open_link(X,Y) if lined(X,Y) and no door
+
 
 list_things(Place):-
     location_list(object(X,article(A),colour(Y),_,_), Place),
@@ -63,17 +40,35 @@ list_things(Place):-
     fail.
 list_things(_).
 
-list_connections(Place):-
+/* list_connections(Place):-
     connected(Place, X),
     tab(2),
     write(X),
     nl,
-    fail.
-list_connections(_).
+    fail. */
+list_connections(Place):-
+    findall(X,(location(Place,_,List), member(X, List), \+(X = '')), L),
+    print_list(L),
+    nl.
+% list_connections(_).
+
+print_list([]).
+print_list([H|T]):-
+    write(H),
+    nl,
+    print_list(T).
+
+
+
+
+connected(X,Y):-
+    connected_by_door(X,Y).
+connected(X,Y):-
+    connected_open(X,Y).
 
 look:-
     here(Place),
-    write('You are in the '), write(Place), nl,
+    write('You are '), write(Place), nl,
     write('You can see: '), nl,
     list_things(Place),
     write('You can go to: '), nl,
@@ -98,8 +93,11 @@ go_to(Place):-
 
 can_go(Place):-
     here(X),
-    connected(X,Place),
+    connected_by_door(X,Place),
     door_is_open(X,Place).
+can_go(Place):-
+    here(X),
+    connected_open(X,Place).
 can_go(_):-
     write('You can''t get there from here.'),
     fail.
@@ -334,6 +332,9 @@ load_adventure(y):-
     write('loading saved adventure...').
     %restore(saved_state).
 load_adventure(_).
+
+save_adventure:-
+    save(saved_state).
 
 endCond(end):-
     write('Game over.'),
