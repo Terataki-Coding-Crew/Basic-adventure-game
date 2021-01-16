@@ -25,7 +25,7 @@ connected_by_door(X,Y):-
 connected_by_door(X,Y):-
     door(Y,X,_).
 connected_open(X,Y):-
-    location(X,_,List),
+    location(X,_,_,List),
     member(Y, List),
     fail.
 connected_open(_,_).
@@ -34,9 +34,9 @@ connected_open(_,_).
 
 
 list_things(Place):-
-    location_list(object(X,article(A),colour(Y),_,_), Place),
+    location_list(object(_,description(D),_), Place),
     tab(2),
-    respond(['You see ',A,Y,X]),
+    respond(['You see ',D]),
     fail.
 list_things(_).
 
@@ -47,7 +47,7 @@ list_things(_).
     nl,
     fail. */
 list_connections(Place):-
-    findall(X,(location(Place,_,List), member(X, List), \+(X = '')), L),
+    findall(X,(location(Place,_,_,List), member(X, List), \+(X = '')), L),
     print_list(L),
     nl.
 % list_connections(_).
@@ -169,7 +169,7 @@ can_take(Object):-
     fail.
 
 take_object(Object):-
-    retract(location(object(Object,_,_,_),_)),
+    retract(location_list(object(Object,_,_),_)),
     asserta(have(Object)),
     write('Taken.').
 
@@ -181,7 +181,7 @@ take_object(Object):-
 put(Item):-
     retract(have(Item)),
     here(Place),
-    asserta(location(object(Item,_,_,_),Place)).
+    asserta(location_list(object(Item,_,_),Place)).
 put(Item):-
     nl,
     write('You do not have the '),write(Item),nl,
@@ -227,16 +227,16 @@ turn_off(_):-
 /* Recursive search*/
 /* What is found in "Place"? */
 is_contained_in(Item,Place):-
-    location(object(Item, _, _, _),Place).
+    location_list(object(Item, _, _),Place).
 is_contained_in(Item,Place):-
-    location(object(X,_,_,_),Place),
+    location_list(object(X,_,_),Place),
     is_contained_in(Item,X).
 
 /* Where can "Item" be found? */
 where_is(Item,Place):-
-    location(object(Item,_,_,_),Place).
+    location_list(object(Item,_,_),Place).
 where_is(Item,Place):-
-    location(object(Item,_,_,_),X),
+    location_list(object(Item,_,_),X),
     where_is(X,Place).
 
 /* List predicates */
@@ -308,6 +308,7 @@ split_at(Elem,List,Left,Right) :-
 adventure:-
     %write('Welcome to Adventure.'),
     introduction,
+    help,
     choose_options,
     nl,
     look,
@@ -352,9 +353,35 @@ do(look):-
      !.
 do(peep):-
     look.
+do(help):-
+    help.
+do(h):-
+    help.
+do(save):-
+   save_adventure.
+
 
 
  /* Puzzles */
 puzzle(_):-
     write('This is a puzzle'),
     nl.
+
+/* Hazzards */
+
+
+/* Help */
+help:-
+    write('The following commands are available: \n'),
+    write('Remember to use only lowercase letters and end each command with a "." \n'),
+    nl,
+    write('end. - end game without saving \n'),
+    write('save. - save the current game state \n'),
+    write('load. - restore previous game state \n'),
+    write('\n Direction commands: \n'),
+    write('n. - go north \n'),
+    write('e. - go east \n'),
+    write('s. - go south \n'),
+    write('w. - go west \n'),
+    write('u. - go up \n'),
+    write('d. - go down \n').

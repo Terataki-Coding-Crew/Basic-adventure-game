@@ -2,16 +2,16 @@
 
  
 introduction:-
-    write('Welcome to the adventure').
+    write('Welcome to the adventure \n\n').
 
 room(kitchen).
 room(office).
 
 :- dynamic here/1.
-here('By the gates').
+here('by the gates').
 
 
-:- dynamic is_in/1
+:- dynamic is_in/1.
 is_in(knife,desk).
 
 :- dynamic have/1.
@@ -21,10 +21,46 @@ is_in(knife,desk).
 flashlight(off).
 
 
-/* location(NAME,ID,DESCRIPTION,LINKS[N,E,S,W]) */
-location('By the gates', '', ['','','On the drive','']).
-location('On the drive', '', ['By the gates','','','']).
-location('On a forest path'), '', ['','','','']).
+/* location(NAME,ID,DESCRIPTION,LINKS[N,E,S,W,U,D]) */
+location('by the gates',
+         'gates',
+         'by the gates to a large, old house. Beyond the gates there is an overgrown drive curving up to the house.',
+         ['','','on the drive','','','']).
+location('on the drive',
+         'drive1',
+         '',
+         ['By the gates','','','','','']).
+location('on a forest path',
+         'forest1',
+         '',
+         ['','','','','','']).
+location('in the kitchen',
+         'kitchen',
+         '',
+         ['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
+location('','','','',['','','','','','']).
 
 
 :- dynamic door/3.
@@ -33,14 +69,14 @@ door(kitchen,office,closed).
 door(hall, 'dining room', closed).
 door(kitchen, cellar, closed).
 door('dining room',kitchen, closed).
-door('By the gates', 'On the drive', open).
+door(gates, drive1, open).
 
-:- dynamic location_list/2.
-location_list(object(desk, article(a), colour(brown), size(large), weight(90)),office).
-location_list(object(apple, article(a), colour(red), size(small), weight(1)),kitchen).
-location_list(object(flashlight, article(a), colour(silver), size(small), weight(2)),desk).
-location_list(object('washing machine', article(a), colour(white), size(large), weight(200)), cellar).
-location_list(object(moosies, article(the), colour(black), size(small), weight(10)),'dog basket').
-location_list(object(broccoli, article(some), colour(green), size(small), weight(1)),kitchen).
-location_list(object(crackers, article(some), colour(biscuit-coloured), size(small), weight(1)),kitchen).
-location_list(object(computer, article(a), colour(cream), size(medium), weight(10)), desk).
+:- dynamic location_list/2. %Where objects are found and what is at each location. - add descriptions
+location_list(object(desk, description('a large wooden desk with two drawers, one of which is locked'), weight(90)),office).
+location_list(object(apple,  description('a red apple on the table'), weight(1)),kitchen).
+location_list(object(flashlight, description('a torch lying on the desk'), weight(2)),desk).
+location_list(object('washing machine', description('an old washing machine that has seen better days'), weight(200)), cellar).
+location_list(object(moosies, description('a medium-sized black dog with a silly grin'), weight(10)),'dog basket').
+location_list(object(broccoli, description('a sprig of broccoli'), weight(1)),kitchen).
+location_list(object(crackers, description('a packet of crackers, recently opened'), weight(1)),kitchen).
+location_list(object(computer, description('an old Commodore Amiga computer'), weight(10)), desk).
