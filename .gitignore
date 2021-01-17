@@ -1,0 +1,6 @@
+/* ignore .po .itf */
+
+*.po
+*itf
+
+
