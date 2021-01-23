@@ -1,0 +1,26 @@
+* Kitchen
+
+** Location
+    in the kitchen
+    kitchen
+    in a kitchen
+*** links (n,s,e,w,u,d)
+    a. 
+    b. 
+    c. 
+    d. 
+    e. none
+    f. door to cellar
+
+** Objects
+a. key hanging from a hook on the wall by the door
+b. door
+c. door
+d. door to pantry
+e. window
+f. table
+g. sink
+
+** Problems
+
+** 

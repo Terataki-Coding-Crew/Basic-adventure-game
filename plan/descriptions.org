@@ -26,9 +26,10 @@
 3. Dining room
 4. Lounge
 5. Utility room
-6. Kitchen
+6. [[file:./kitchen.org][Kitchen]]
 7. Pantry
 8. Downstairs toilet
+9. Office
 **** First floor
 1. Landing
 2. Stairs down
