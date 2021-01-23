@@ -1,0 +1,53 @@
+* The Haunted House
+
+** Map
+*** Outside
+1. Garden shed
+2. 
+*** Inside
+1. Ground floor
+2. First Floor
+3. Attic
+4. Cellar
+
+
+** locations
+*** Outside:
+1. by the gates
+2. on the drive
+3. at the door
+4. on the garden path
+5. at the garden shed
+6. in the shed
+*** Inside:
+**** Ground floor
+1. Hall
+2. Stairs up
+3. Dining room
+4. Lounge
+5. Utility room
+6. Kitchen
+7. Pantry
+8. Downstairs toilet
+**** First floor
+1. Landing
+2. Stairs down
+3. Stairs up
+4. Master bedroom
+5. Second bedroom
+6. Small bedroom
+7. Study
+8. Hidden room
+9. Bathroom
+10. Toilet
+**** Attic
+1. Stairs down
+2. Attic
+3. Small room at end of attic
+**** Cellar
+1. Stairs up
+2. Billiards room
+3. Tools room
+4. Laundry room
+   
+    
