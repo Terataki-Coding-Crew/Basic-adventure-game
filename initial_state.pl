@@ -21,15 +21,16 @@ is_in(knife,desk).
 flashlight(off).
 
 
-/* location(NAME,ID,DESCRIPTION,LINKS[N,E,S,W,U,D]) */
+/* location(NAME,ID,DESCRIPTION,LINKS[N,E,S,W,U,D])*/
+/* location/4 */
 location('by the gates',
          'gates',
          'by the gates to a large, old house. Beyond the gates there is an overgrown drive curving up to the house.',
-         ['','','on the drive','','','']).
-location('on the drive',
-         'drive1',
-         '',
-         ['By the gates','','','','','']).
+         ['','','the drive','','','']).
+location('the drive',
+         'drive',
+         'on an overgrown gravel drive, curving smoothly to your left. At the end of the drive there is an old, three-storey house. ',
+         ['by the gates','','','','','']).
 location('on a forest path',
          'forest1',
          '',
@@ -38,7 +39,7 @@ location('in the kitchen',
          'kitchen',
          '',
          ['','','','','','']).
-location('','','','',['','','','','','']).
+location('in an office','office','',['','','','','','']).
 location('','','','',['','','','','','']).
 location('','','','',['','','','','','']).
 location('','','','',['','','','','','']).
@@ -64,6 +65,7 @@ location('','','','',['','','','','','']).
 
 
 :- dynamic door/3.
+% There is a door between two locations
 door(office,hall,closed).
 door(kitchen,office,closed).
 door(hall, 'dining room', closed).

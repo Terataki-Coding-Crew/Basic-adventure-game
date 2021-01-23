@@ -19,13 +19,14 @@ main:-
 
 
 
-
+% Places can be connected by a door (both ways) or if there is a direct opening
+% Door connections are listed explicitly in game state
 connected_by_door(X,Y):-
     door(X,Y,_).
 connected_by_door(X,Y):-
     door(Y,X,_).
 connected_open(X,Y):-
-    location(X,_,_,List),
+    location(_,X,_,List),
     member(Y, List),
     fail.
 connected_open(_,_).
@@ -34,9 +35,10 @@ connected_open(_,_).
 
 
 list_things(Place):-
-    location_list(object(_,description(D),_), Place),
+    location(Place, Here, _, _),
+    location_list(object(_,description(D),_), Here),
     tab(2),
-    respond(['You see ',D]),
+    respond([D, '\n']),
     fail.
 list_things(_).
 
@@ -60,7 +62,7 @@ print_list([H|T]):-
 
 
 
-
+% Places are connected of they are connected by a door or by an opening
 connected(X,Y):-
     connected_by_door(X,Y).
 connected(X,Y):-
@@ -68,7 +70,8 @@ connected(X,Y):-
 
 look:-
     here(Place),
-    write('You are '), write(Place), nl,
+    location(Place,_,Description,_),
+    write('You are '), write(Description), nl,
     write('You can see: '), nl,
     list_things(Place),
     write('You can go to: '), nl,
@@ -89,7 +92,8 @@ look_in(X):-
 go_to(Place):-
     can_go(Place),
     move(Place),
-    look.
+    look,
+    !.
 
 can_go(Place):-
     here(X),
@@ -97,7 +101,8 @@ can_go(Place):-
     door_is_open(X,Place).
 can_go(Place):-
     here(X),
-    connected_open(X,Place).
+    connected_open(X,Place),
+    \+(connected_by_door(X,Place)).
 can_go(_):-
     write('You can''t get there from here.'),
     fail.
@@ -250,7 +255,7 @@ append([],X,X). % Appending X to an empty list id X.
 append([H|T1],X,[H|T2]):-    % Append X to tail T1 to produce T2 and add it to H.
     append(T1,X,T2).
 
-
+/* location/2 */
 location(Item,Place):-     % Item is found in Place if it is a member of the Item-list of Place
     location_list(Item_list,Place),
     member(Item,Item_list).
@@ -318,7 +323,7 @@ adventure:-
 game_loop:-
     %repeat,
     read(Command),
-    puzzle(Command),
+    problem(Command),
     do(Command),
     nl,
     (endCond(Command); game_loop).
@@ -363,11 +368,11 @@ do(save):-
 
 
  /* Puzzles */
-puzzle(_):-
+problem(_):-
     write('This is a puzzle'),
     nl.
 
-/* Hazzards */
+/* Hazards */
 
 
 /* Help */
